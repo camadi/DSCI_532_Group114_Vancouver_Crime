@@ -1,4 +1,4 @@
-DSCI_532_Group114_SKEC_Vancouver_Crime_Tracker
+DSCI_532_Group114_Vancouver_Crime
 ================
 @Chimaobi Amadi, Elliott Ribner, Shivam Verma, Xugang Zhong(Kirk)
 
