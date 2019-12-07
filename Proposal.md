@@ -2,7 +2,7 @@ Proposal- Vancouver Crime Tracker
 ================
 Chimaobi Amadi, Elliott Ribner, Shivam Verma, Xugang Zhong(Kirk)
 
-2019-11-22
+Updated 2019-12-07
 
 ## Motivation and Purpose
 
