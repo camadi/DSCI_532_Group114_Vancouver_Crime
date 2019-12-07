@@ -76,20 +76,17 @@ Month-of-Year (*Chart 1*) & Time-of-Day (*Chart 2*) to help him
 understand the behavior of crimes around the city. In addition to this,
 he can look at the trend of crime rate by year (*Chart 3*) and get to
 know the composition of crimes (*Chart 4*) as
-well.
+well. It will help the public and stakeholders to identify the most frequent crime types in their neigbourhood(s).
 
 
 ## Sketch of the Application
 
 -----
 
-### Design 1
+### Screenshot of the current progress (more staffs comming)
 ![Sketch](https://github.com/UBC-MDS/DSCI_532_Group114_SKEC/blob/master/Img/sketch.png?raw=true "Crime Information by Vancouver Neighbourhood")
 
-### Design 2
-![Sketch1](https://github.com/UBC-MDS/DSCI_532_Group114_SKEC/blob/master/Img/sketch1.png?raw=true)
 
-![Sketch2](https://github.com/UBC-MDS/DSCI_532_Group114_SKEC/blob/master/Img/sketch2.png?raw=true)
 
 ### App Desciription
 
