@@ -21,8 +21,8 @@ Please click [here](https://dsci532group114milestone2.herokuapp.com) to view the
 [License](https://github.com/UBC-MDS/DSCI_532_Group114_SKEC/blob/master/LICENSE)  
 
 ## Folder Structure:
-`Data`: This is where data resides  
-`Img`: Images of App designs  
+`data`: This is where data resides  
+`img`: Images of App designs  
 `src`: Contains all the source codes we have used to develop this app  
 
 
