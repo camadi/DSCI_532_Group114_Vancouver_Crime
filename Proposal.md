@@ -84,7 +84,7 @@ well. It will help the public and stakeholders to identify the most frequent cri
 -----
 
 ### Screenshot of the current progress (more staffs comming)
-![Sketch](https://github.com/UBC-MDS/DSCI_532_Group114_SKEC/blob/master/Img/sketch.png?raw=true "Crime Information by Vancouver Neighbourhood")
+![Sketch](https://github.com/UBC-MDS/DSCI_532_Group114_Vancouver_Crime/blob/master/working_progress_screenshot.pdf)
 
 
 
