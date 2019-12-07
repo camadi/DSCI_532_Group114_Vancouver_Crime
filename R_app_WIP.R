@@ -159,7 +159,6 @@ make_charts(type_lst[1:3], ngbrhd_lst, yr_lst)
 
 
 
-
 # Need to add this
 # # Converting XY UTM coordinate system to Latitude & Longitude
 # p = Proj(proj='utm', zone=10, ellps='WGS84', preserve_units=False)
