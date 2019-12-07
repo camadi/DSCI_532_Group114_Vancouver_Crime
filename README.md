@@ -12,10 +12,10 @@ We are still working on reproduce the plot in R. More is coming. Please see the 
 ![Working_screenshot](/img/screenshot.png)
 
 ## Key Documents:
-[App Proposal](https://github.com/UBC-MDS/DSCI_532_Group114_SKEC/blob/master/Proposal.md)  
-[Code of Conduct (CoC)](https://github.com/UBC-MDS/DSCI_532_Group114_SKEC/blob/master/CODE_OF_CONDUCT.md)  
-[Contributing](https://github.com/UBC-MDS/DSCI_532_Group114_SKEC/blob/master/Contributing.md)    
-[License](https://github.com/UBC-MDS/DSCI_532_Group114_SKEC/blob/master/LICENSE)  
+[App Proposal](https://github.com/UBC-MDS/DSCI_532_Group114_Vancouver_Crime/blob/master/Proposal.md)  
+[Code of Conduct (CoC)](https://github.com/UBC-MDS/DSCI_532_Group114_Vancouver_Crime/blob/master/CODE_OF_CONDUCT.md)  
+[Contributing](https://github.com/UBC-MDS/DSCI_532_Group114_Vancouver_Crime/blob/master/Contributing.md)    
+[License](https://github.com/UBC-MDS/DSCI_532_Group114_Vancouver_Crime/blob/master/LICENSE)  
 
 ## Folder Structure:
 `data`: This is where data resides  
