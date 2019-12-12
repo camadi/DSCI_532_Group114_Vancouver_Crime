@@ -68,30 +68,12 @@ yearMarks <- map(unique(mydata$YEAR), as.character)
 names(yearMarks) <- unique(mydata$YEAR)
 yearSlider <- dccRangeSlider(
   id = "year",
-  #marks = yearMarks,
-  print(yearMarks),
+  marks = yearMarks,
   min = 2003,
   max = 2018,
   step = 5,
-  value = list(2010, 2018),
-  marks={
-        2003
-        2004
-        2005
-        2006
-        2008
-        2009
-        # 2007:{'label': '2009'}
-        # 2010:{'label': '2010'}
-        # 2011:{'label': '2011'}
-        # 2012:{'label': '2012'}
-        # 2013:{'label': '2013'}
-        # 2014:{'label': '2014'}
-        # 2015:{'label': '2015'}
-        # 2016:{'label': '2016'}
-        # 2017:{'label': '2017'}
-        # 2018:{'label': '2018'}
-  }
+  value = list(2010, 2018)
+  
 )
 
 neigh_Dropdown <- dccDropdown(
@@ -102,7 +84,8 @@ neigh_Dropdown <- dccDropdown(
     levels(mydata$NEIGHBOURHOOD), function(x){
       list(label=x, value=x)
     }),
-  value = levels(mydata$NEIGHBOURHOOD), #Selects all by default
+  #value = levels(mydata$NEIGHBOURHOOD), #Selects all by default
+  value = list(mydata$NEIGHBOURHOOD),
   multi = TRUE
 )
 
@@ -402,6 +385,41 @@ app$callback(
     make_charts1(year_value, neighbourhood_value, type_value)
   })
 
+app$callback(
+  #update figure of gap-graph
+  output=list(id = 'graph2', property='figure'),
+  #based on values of year, continent, y-axis components
+  params=list(input(id = 'year', property='value'),
+              input(id = 'neighbourhood', property='value'),
+              input(id = 'type', property='value')),
+  #this translates your list of params into function arguments
+  function(year_value, neighbourhood_value, type_value) {
+    make_charts2(year_value, neighbourhood_value, type_value)
+  })
+
+  app$callback(
+  #update figure of gap-graph
+  output=list(id = 'graph3', property='figure'),
+  #based on values of year, continent, y-axis components
+  params=list(input(id = 'year', property='value'),
+              input(id = 'neighbourhood', property='value'),
+              input(id = 'type', property='value')),
+  #this translates your list of params into function arguments
+  function(year_value, neighbourhood_value, type_value) {
+    make_charts3(year_value, neighbourhood_value, type_value)
+  })
+
+  app$callback(
+  #update figure of gap-graph
+  output=list(id = 'graph4', property='figure'),
+  #based on values of year, continent, y-axis components
+  params=list(input(id = 'year', property='value'),
+              input(id = 'neighbourhood', property='value'),
+              input(id = 'type', property='value')),
+  #this translates your list of params into function arguments
+  function(year_value, neighbourhood_value, type_value) {
+    make_charts4(year_value, neighbourhood_value, type_value)
+  })
 # app$callback(
 #   #update data of gap-table
 #   output=list(id = 'gap-table', property='data'),
