@@ -68,11 +68,30 @@ yearMarks <- map(unique(mydata$YEAR), as.character)
 names(yearMarks) <- unique(mydata$YEAR)
 yearSlider <- dccRangeSlider(
   id = "year",
-  marks = yearMarks,
+  #marks = yearMarks,
+  print(yearMarks),
   min = 2003,
   max = 2018,
   step = 5,
-  value = list(2010, 2018)
+  value = list(2010, 2018),
+  marks={
+        2003
+        2004
+        2005
+        2006
+        2008
+        2009
+        # 2007:{'label': '2009'}
+        # 2010:{'label': '2010'}
+        # 2011:{'label': '2011'}
+        # 2012:{'label': '2012'}
+        # 2013:{'label': '2013'}
+        # 2014:{'label': '2014'}
+        # 2015:{'label': '2015'}
+        # 2016:{'label': '2016'}
+        # 2017:{'label': '2017'}
+        # 2018:{'label': '2018'}
+  }
 )
 
 neigh_Dropdown <- dccDropdown(
@@ -106,8 +125,8 @@ all_neig <- unique(mydata$NEIGHBOURHOOD)
 all_year <- unique(mydata$YEAR)
 all_types <- unique(mydata$TYPE)
 
-#Creating charts
-make_charts <- function(yr_lst = all_year, ngbrhd_lst = all_neig, type_lst = all_types){
+#Creating chart1
+make_charts1 <- function(yr_lst = all_year, ngbrhd_lst = all_neig, type_lst = all_types){
     df <- mydata %>% 
         filter(TYPE %in% type_lst & NEIGHBOURHOOD %in% ngbrhd_lst & YEAR %in% yr_lst)
 
@@ -157,57 +176,179 @@ make_charts <- function(yr_lst = all_year, ngbrhd_lst = all_neig, type_lst = all
             axis.text.x = element_text(angle = 30, hjust = 0.5))
     ggplotly(chart1)
 
-    # chart[2] <- ggplot(TOD, aes(x=HOUR, y=N)) + 
-    #     geom_bar(stat = "identity") + 
-    #     labs(x='HOUR', y= 'Occurrence Count') + 
-    #     scale_y_continuous(labels = scales::comma) +
-    #     scale_x_continuous(breaks = seq(0, 23, 2)) +
-    #     ggtitle("Crime Occurrence by Time of Day") + 
-    #     theme_minimal_grid() + 
-    #     theme(
-    #         text = element_text(size = 12),
-    #         axis.title.x = element_text(size = 15),
-    #         axis.title.y = element_text(size = 15),
-    #         axis.text.x = element_text(angle = 30, hjust = 0.5))
-    # ggplotly(chart[[2]])
+}
+make_charts2 <- function(yr_lst = all_year, ngbrhd_lst = all_neig, type_lst = all_types){
+    df <- mydata %>% 
+        filter(TYPE %in% type_lst & NEIGHBOURHOOD %in% ngbrhd_lst & YEAR %in% yr_lst)
+
+    MOY <- df %>% 
+        group_by(MONTH) %>%
+        summarise(N = n()) %>%
+        arrange(MONTH)
+    MOY <- MOY %>% 
+        mutate(MONTH_NAME = c('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'))
+
+    TOD <- df %>% 
+        group_by(HOUR) %>%
+        summarise(N = n()) %>%
+        arrange(HOUR)
+
+    type_crimes <- df %>% 
+        group_by(TYPE) %>%
+        summarise(N = n()) %>%
+        arrange(-N)
+    type_crimes <- type_crimes %>% mutate(contri = N/sum(type_crimes$N))
+
+    crime_rate <- df %>% 
+        group_by(YEAR) %>%
+        summarise(N = n()) %>%
+        arrange(YEAR)
 
 
-    # chart[3] <- ggplot(crime_rate, aes(x=YEAR, y=rate)) + 
-    #     geom_point() + 
-    #     geom_line() + 
-    #     labs(x='YEAR', y= 'Crime Occurrences per 1000 People') + 
-    #     scale_x_continuous(breaks = seq(min(crime_rate$YEAR), max(crime_rate$YEAR), 1)) +
-    #     ggtitle("Crime Rate") + 
-    #     theme_minimal_grid() + 
-    #     theme(
-    #         text = element_text(size = 12),
-    #         axis.title.x = element_text(size = 15),
-    #         axis.title.y = element_text(size = 15))
-    # ggplotly(chart[[3]])
 
-    # chart[4] <- ggplot(type_crimes, aes(x=reorder(TYPE, -contri), y=contri)) + 
-    #     geom_bar(stat = "identity") + 
-    #     labs(x='', y= 'Contribution') + 
-    #     scale_y_continuous(labels = scales::percent) +
-    #     ggtitle("Constituents of Selected Crimes") + 
-    #     theme_minimal_grid() + 
-    #     theme(
-    #         text = element_text(size = 12),
-    #         axis.title.x = element_text(size = 15),
-    #         axis.title.y = element_text(size = 15),
-    #         axis.text.x = element_text(angle = 30, hjust = 1))
-    #ggplotly(chart[4])
+    # Adding population data to plot crime rate
+    required_prop <-pop_prop %>% filter(NEIGHBOURHOOD %in% ngbrhd_lst) %>% pull(proportion) %>% sum()
+    pop_yr <- pop_yr %>% filter(YEAR %in% yr_lst) %>% mutate(Population = Population*required_prop)
 
+    crime_rate <- inner_join(crime_rate, pop_yr)
+    crime_rate <- crime_rate %>% mutate(rate = (N/Population)*1000)
+
+    chart2 <- ggplot(TOD, aes(x=HOUR, y=N)) + 
+        geom_bar(stat = "identity") + 
+        labs(x='HOUR', y= 'Occurrence Count') + 
+        scale_y_continuous(labels = scales::comma) +
+        scale_x_continuous(breaks = seq(0, 23, 2)) +
+        ggtitle("Crime Occurrence by Time of Day") + 
+        theme_minimal_grid() + 
+        theme(
+            text = element_text(size = 12),
+            axis.title.x = element_text(size = 15),
+            axis.title.y = element_text(size = 15),
+            axis.text.x = element_text(angle = 30, hjust = 0.5))
+    ggplotly(chart2)
+}
+make_charts3 <- function(yr_lst = all_year, ngbrhd_lst = all_neig, type_lst = all_types){
+    df <- mydata %>% 
+        filter(TYPE %in% type_lst & NEIGHBOURHOOD %in% ngbrhd_lst & YEAR %in% yr_lst)
+
+    MOY <- df %>% 
+        group_by(MONTH) %>%
+        summarise(N = n()) %>%
+        arrange(MONTH)
+    MOY <- MOY %>% 
+        mutate(MONTH_NAME = c('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'))
+
+    TOD <- df %>% 
+        group_by(HOUR) %>%
+        summarise(N = n()) %>%
+        arrange(HOUR)
+
+    type_crimes <- df %>% 
+        group_by(TYPE) %>%
+        summarise(N = n()) %>%
+        arrange(-N)
+    type_crimes <- type_crimes %>% mutate(contri = N/sum(type_crimes$N))
+
+    crime_rate <- df %>% 
+        group_by(YEAR) %>%
+        summarise(N = n()) %>%
+        arrange(YEAR)
+
+
+
+    # Adding population data to plot crime rate
+    required_prop <-pop_prop %>% filter(NEIGHBOURHOOD %in% ngbrhd_lst) %>% pull(proportion) %>% sum()
+    pop_yr <- pop_yr %>% filter(YEAR %in% yr_lst) %>% mutate(Population = Population*required_prop)
+
+    crime_rate <- inner_join(crime_rate, pop_yr)
+    crime_rate <- crime_rate %>% mutate(rate = (N/Population)*1000)
+
+    chart3 <- ggplot(crime_rate, aes(x=YEAR, y=rate)) + 
+        geom_point() + 
+        geom_line() + 
+        labs(x='YEAR', y= 'Crime Occurrences per 1000 People') + 
+        scale_x_continuous(breaks = seq(min(crime_rate$YEAR), max(crime_rate$YEAR), 1)) +
+        ggtitle("Crime Rate") + 
+        theme_minimal_grid() + 
+        theme(
+            text = element_text(size = 12),
+            axis.title.x = element_text(size = 15),
+            axis.title.y = element_text(size = 15))
+    ggplotly(chart3)
+}
+ make_charts4 <- function(yr_lst = all_year, ngbrhd_lst = all_neig, type_lst = all_types){
+    df <- mydata %>% 
+        filter(TYPE %in% type_lst & NEIGHBOURHOOD %in% ngbrhd_lst & YEAR %in% yr_lst)
+
+    MOY <- df %>% 
+        group_by(MONTH) %>%
+        summarise(N = n()) %>%
+        arrange(MONTH)
+    MOY <- MOY %>% 
+        mutate(MONTH_NAME = c('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'))
+
+    TOD <- df %>% 
+        group_by(HOUR) %>%
+        summarise(N = n()) %>%
+        arrange(HOUR)
+
+    type_crimes <- df %>% 
+        group_by(TYPE) %>%
+        summarise(N = n()) %>%
+        arrange(-N)
+    type_crimes <- type_crimes %>% mutate(contri = N/sum(type_crimes$N))
+
+    crime_rate <- df %>% 
+        group_by(YEAR) %>%
+        summarise(N = n()) %>%
+        arrange(YEAR)
+
+
+
+    # Adding population data to plot crime rate
+    required_prop <-pop_prop %>% filter(NEIGHBOURHOOD %in% ngbrhd_lst) %>% pull(proportion) %>% sum()
+    pop_yr <- pop_yr %>% filter(YEAR %in% yr_lst) %>% mutate(Population = Population*required_prop)
+
+    crime_rate <- inner_join(crime_rate, pop_yr)
+    crime_rate <- crime_rate %>% mutate(rate = (N/Population)*1000)
+
+    chart4 <- ggplot(type_crimes, aes(x=reorder(TYPE, -contri), y=contri)) + 
+        geom_bar(stat = "identity") + 
+        labs(x='', y= 'Contribution') + 
+        scale_y_continuous(labels = scales::percent) +
+        ggtitle("Constituents of Selected Crimes") + 
+        theme_minimal_grid() + 
+        theme(
+            text = element_text(size = 12),
+            axis.title.x = element_text(size = 15),
+            axis.title.y = element_text(size = 15),
+            axis.text.x = element_text(angle = 30, hjust = 1))
+    ggplotly(chart4)
+}
     #return(plot_grid(chart1, chart2, chart3, chart4))
     #return chart
-}
+#}
 
 # Now we define the graph as a dash component using generated figure
-graph <- dccGraph(
-  id = 'gap-graph',
-  figure=make_charts() # gets initial data using argument defaults
+graph1 <- dccGraph(
+  id = 'graph1',
+  figure=make_charts1() # gets initial data using argument defaults
 )
 
+graph2 <- dccGraph(
+  id = 'graph2',
+  figure=make_charts2() # gets initial data using argument defaults
+)
+
+graph3 <- dccGraph(
+  id = 'graph3',
+  figure=make_charts3() # gets initial data using argument defaults
+)
+
+graph4 <- dccGraph(
+  id = 'graph4',
+  figure=make_charts4() # gets initial data using argument defaults
+)
 app$layout(
   htmlDiv(
     list(
@@ -222,7 +363,10 @@ app$layout(
       #htmlLabel('Select y-axis metric:'),
       type_Dropdown,
       #graph and table
-      graph, 
+      graph1, 
+      graph2,
+      graph3,
+      graph4,
       htmlIframe(height=20, width=10, style=list(borderWidth = 0)), #space
       #htmlLabel('Try sorting by table columns!'),
       #table,
@@ -248,14 +392,14 @@ app$layout(
 # BUT can use multiple inputs for each!
 app$callback(
   #update figure of gap-graph
-  output=list(id = 'gap-graph', property='figure'),
+  output=list(id = 'graph1', property='figure'),
   #based on values of year, continent, y-axis components
   params=list(input(id = 'year', property='value'),
               input(id = 'neighbourhood', property='value'),
               input(id = 'type', property='value')),
   #this translates your list of params into function arguments
   function(year_value, neighbourhood_value, type_value) {
-    make_charts(year_value, continent_value, yaxis_value)
+    make_charts1(year_value, neighbourhood_value, type_value)
   })
 
 # app$callback(
