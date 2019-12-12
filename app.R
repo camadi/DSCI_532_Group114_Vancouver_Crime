@@ -81,23 +81,23 @@ neigh_Dropdown <- dccDropdown(
   # map/lapply can be used as a shortcut instead of writing the whole list
   # especially useful if you wanted to filter by country!
   options = map(
-    levels(mydata$NEIGHBOURHOOD), function(x){
+    levels(as.factor(mydata$NEIGHBOURHOOD)), function(x){
       list(label=x, value=x)
     }),
-  #value = levels(mydata$NEIGHBOURHOOD), #Selects all by default
-  value = list(mydata$NEIGHBOURHOOD),
+  value = levels(as.factor(mydata$NEIGHBOURHOOD)), #Selects all by default
   multi = TRUE
 )
+
 
 type_Dropdown <- dccDropdown(
   id = "type",
   # map/lapply can be used as a shortcut instead of writing the whole list
   # especially useful if you wanted to filter by country!
   options = map(
-    levels(mydata$TYPE), function(x){
+    levels(as.factor(mydata$TYPE)), function(x){
       list(label=x, value=x)
     }),
-  value = levels(mydata$TYPE), #Selects all by default
+  value = levels(as.factor(mydata$TYPE)), #Selects all by default
   multi = TRUE
 )
 
