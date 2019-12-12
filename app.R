@@ -244,5 +244,29 @@ app$layout(
 
 # try running each chart in ggplotly
 
+# Adding callbacks for interactivity
+# We need separate callbacks to update graph and table
+# BUT can use multiple inputs for each!
+app$callback(
+  #update figure of gap-graph
+  output=list(id = 'gap-graph', property='figure'),
+  #based on values of year, continent, y-axis components
+  params=list(input(id = 'year', property='value'),
+              input(id = 'continent', property='value'),
+              input(id = 'y-axis', property='value')),
+  #this translates your list of params into function arguments
+  function(year_value, continent_value, yaxis_value) {
+    make_graph(year_value, continent_value, yaxis_value)
+  })
 
+app$callback(
+  #update data of gap-table
+  output=list(id = 'gap-table', property='data'),
+  params=list(input(id = 'year', property='value'),
+              input(id = 'continent', property='value')),
+  function(year_value, continent_value) {
+    make_table(year_value, continent_value)
+  })
+
+app$run_server()
 
