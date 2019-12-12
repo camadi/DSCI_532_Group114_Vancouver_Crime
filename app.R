@@ -336,16 +336,19 @@ app$layout(
   htmlDiv(
     list(
       htmlH1('Vancouver Crime Tracker'),
-      htmlH2('This is an interactive visualization based on the data provided by the Vancouver Police Department (VPD)'),
+      htmlIframe(height=20, width=10, style=list(borderWidth = 0)), #space
+      htmlH3("Using Data from VPD we have created several plots for residents and visitors of Vancouver to view crime data. 
+      There are three selectors, one for neighbourhood, crime type, and year. All three selectors impact each of the plots. 
+      The crime rate plot is normalized for population change in Vancouver, other than that the data is non-normalized."),
       #selection components
       #htmlLabel('Select a year range:'),
       yearSlider,
       htmlIframe(height=15, width=10, style=list(borderWidth = 0)), #space
       #htmlLabel('Select continents:'),
       neigh_Dropdown,
-      #htmlLabel('Select y-axis metric:'),
+      htmlIframe(height=15, width=10, style=list(borderWidth = 0)), #space
       type_Dropdown,
-      #graph and table
+      htmlIframe(height=15, width=10, style=list(borderWidth = 0)), #space
       graph1, 
       graph2,
       graph3,
@@ -398,7 +401,7 @@ app$callback(
   })
 
   app$callback(
-  #update figure of gap-graph
+  #update figure of graph3
   output=list(id = 'graph3', property='figure'),
   #based on values of year, continent, y-axis components
   params=list(input(id = 'year', property='value'),
@@ -410,7 +413,7 @@ app$callback(
   })
 
   app$callback(
-  #update figure of gap-graph
+  #update figure of graph4
   output=list(id = 'graph4', property='figure'),
   #based on values of year, continent, y-axis components
   params=list(input(id = 'year', property='value'),
@@ -420,14 +423,6 @@ app$callback(
   function(year_value, neighbourhood_value, type_value) {
     make_charts4(year_value, neighbourhood_value, type_value)
   })
-# app$callback(
-#   #update data of gap-table
-#   output=list(id = 'gap-table', property='data'),
-#   params=list(input(id = 'year', property='value'),
-#               input(id = 'continent', property='value')),
-#   function(year_value, continent_value) {
-#     make_table(year_value, continent_value)
-#   })
 
 app$run_server()
 
