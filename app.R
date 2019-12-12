@@ -18,14 +18,14 @@ app <- Dash$new(external_stylesheets = "https://codepen.io/chriddyp/pen/bWLwgP.c
 
 
 # Reading Vancouver City Population from 2001 to 2018
-pop_yr <- read_csv("Data/Population_trend.csv")
+pop_yr <- read_csv("data/Population_trend.csv")
 pop_yr <- pop_yr %>% select(YEAR, Population)
 
 # Reading each neighborhood's proportion of population to overall city's population
-pop_prop <- read_csv("Data/population_proportion.csv")
+pop_prop <- read_csv("data/population_proportion.csv")
 
 # Reading Crime Data
-mydata <- read_csv("Data/crimedata_csv_all_years.csv")
+mydata <- read_csv("data/crimedata_csv_all_years.csv")
 
 # Removing columns not needed & cleaning data
 mydata <- mydata %>% 
@@ -65,7 +65,7 @@ pop_prop <- pop_prop %>%
 #We can get the years from the dataset to make ticks on the slider
 
 yearMarks <- map(unique(mydata$YEAR), as.character)
-names(yearMarks) <- unique(year_no_2019$YEAR)
+names(yearMarks) <- unique(mydata$YEAR)
 yearSlider <- dccRangeSlider(
   id = "year",
   marks = yearMarks,
@@ -107,7 +107,7 @@ all_year <- unique(mydata$YEAR)
 all_types <- unique(mydata$TYPE)
 
 #Creating charts
-make_charts <- function(type_lst = [all_types], ngbrhd_lst = [all_neig], yr_lst = [all_year]){
+make_charts <- function(yr_lst = all_year, ngbrhd_lst = all_neig, type_lst = all_types){
     df <- mydata %>% 
         filter(TYPE %in% type_lst & NEIGHBOURHOOD %in% ngbrhd_lst & YEAR %in% yr_lst)
 
@@ -199,8 +199,7 @@ make_charts <- function(type_lst = [all_types], ngbrhd_lst = [all_neig], yr_lst 
     ggplotly(chart[4])
 
     #return(plot_grid(chart1, chart2, chart3, chart4))
-
-    return chart
+    #return chart
 }
 
 # Now we define the graph as a dash component using generated figure
@@ -252,21 +251,21 @@ app$callback(
   output=list(id = 'gap-graph', property='figure'),
   #based on values of year, continent, y-axis components
   params=list(input(id = 'year', property='value'),
-              input(id = 'continent', property='value'),
-              input(id = 'y-axis', property='value')),
+              input(id = 'neighbourhood', property='value'),
+              input(id = 'type', property='value')),
   #this translates your list of params into function arguments
-  function(year_value, continent_value, yaxis_value) {
-    make_graph(year_value, continent_value, yaxis_value)
+  function(year_value, neighbourhood_value, type_value) {
+    make_charts(year_value, continent_value, yaxis_value)
   })
 
-app$callback(
-  #update data of gap-table
-  output=list(id = 'gap-table', property='data'),
-  params=list(input(id = 'year', property='value'),
-              input(id = 'continent', property='value')),
-  function(year_value, continent_value) {
-    make_table(year_value, continent_value)
-  })
+# app$callback(
+#   #update data of gap-table
+#   output=list(id = 'gap-table', property='data'),
+#   params=list(input(id = 'year', property='value'),
+#               input(id = 'continent', property='value')),
+#   function(year_value, continent_value) {
+#     make_table(year_value, continent_value)
+#   })
 
 app$run_server()
 
