@@ -315,23 +315,37 @@ make_charts3 <- function(yr_lst = all_year, ngbrhd_lst = all_neig, type_lst = al
 # Now we define the graph as a dash component using generated figure
 graph1 <- dccGraph(
   id = 'graph1',
-  figure=make_charts1() # gets initial data using argument defaults
-)
+  figure=make_charts1(), # gets initial data using argument defaults
+ style = list(
+        width ='49%',
+        display = 'inline-block',
+        padding = '0 20'))
 
 graph2 <- dccGraph(
   id = 'graph2',
-  figure=make_charts2() # gets initial data using argument defaults
+  figure=make_charts2(), # gets initial data using argument defaults
+  style = list(
+        width ='49%',
+        display = 'inline-block',
+        padding = '0 20')
 )
 
 graph3 <- dccGraph(
   id = 'graph3',
-  figure=make_charts3() # gets initial data using argument defaults
+  figure=make_charts3(), # gets initial data using argument defaults
+style = list(
+        width ='49%',
+        display = 'inline-block',
+        padding = '0 20')
 )
 
 graph4 <- dccGraph(
   id = 'graph4',
-  figure=make_charts4() # gets initial data using argument defaults
-)
+  figure=make_charts4(), # gets initial data using argument defaults
+  style = list(
+        width ='49%',
+        display = 'inline-block',
+        padding = '0 20'))
 app$layout(
   htmlDiv(
     list(
