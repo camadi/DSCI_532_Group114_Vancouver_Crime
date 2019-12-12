@@ -143,8 +143,8 @@ make_charts <- function(yr_lst = all_year, ngbrhd_lst = all_neig, type_lst = all
     crime_rate <- inner_join(crime_rate, pop_yr)
     crime_rate <- crime_rate %>% mutate(rate = (N/Population)*1000)
 
-    chart = {}
-    chart[1] <- ggplot(MOY, aes(x=reorder(MONTH_NAME, MONTH), y=N)) + 
+    #chart = {}
+    chart1 <- ggplot(MOY, aes(x=reorder(MONTH_NAME, MONTH), y=N)) + 
         geom_bar(stat = "identity") + 
         labs(x='MONTH', y= 'Occurrence Count') + 
         scale_y_continuous(labels = scales::comma) + 
@@ -155,48 +155,48 @@ make_charts <- function(yr_lst = all_year, ngbrhd_lst = all_neig, type_lst = all
             axis.title.x = element_text(size = 15),
             axis.title.y = element_text(size = 15),
             axis.text.x = element_text(angle = 30, hjust = 0.5))
-    ggplotly(chart[1])
+    ggplotly(chart1)
 
-    chart[2] <- ggplot(TOD, aes(x=HOUR, y=N)) + 
-        geom_bar(stat = "identity") + 
-        labs(x='HOUR', y= 'Occurrence Count') + 
-        scale_y_continuous(labels = scales::comma) +
-        scale_x_continuous(breaks = seq(0, 23, 2)) +
-        ggtitle("Crime Occurrence by Time of Day") + 
-        theme_minimal_grid() + 
-        theme(
-            text = element_text(size = 12),
-            axis.title.x = element_text(size = 15),
-            axis.title.y = element_text(size = 15),
-            axis.text.x = element_text(angle = 30, hjust = 0.5))
-    ggplotly(chart[2])
+    # chart[2] <- ggplot(TOD, aes(x=HOUR, y=N)) + 
+    #     geom_bar(stat = "identity") + 
+    #     labs(x='HOUR', y= 'Occurrence Count') + 
+    #     scale_y_continuous(labels = scales::comma) +
+    #     scale_x_continuous(breaks = seq(0, 23, 2)) +
+    #     ggtitle("Crime Occurrence by Time of Day") + 
+    #     theme_minimal_grid() + 
+    #     theme(
+    #         text = element_text(size = 12),
+    #         axis.title.x = element_text(size = 15),
+    #         axis.title.y = element_text(size = 15),
+    #         axis.text.x = element_text(angle = 30, hjust = 0.5))
+    # ggplotly(chart[[2]])
 
 
-    chart[3] <- ggplot(crime_rate, aes(x=YEAR, y=rate)) + 
-        geom_point() + 
-        geom_line() + 
-        labs(x='YEAR', y= 'Crime Occurrences per 1000 People') + 
-        scale_x_continuous(breaks = seq(min(crime_rate$YEAR), max(crime_rate$YEAR), 1)) +
-        ggtitle("Crime Rate") + 
-        theme_minimal_grid() + 
-        theme(
-            text = element_text(size = 12),
-            axis.title.x = element_text(size = 15),
-            axis.title.y = element_text(size = 15))
-    ggplotly(chart[3])
+    # chart[3] <- ggplot(crime_rate, aes(x=YEAR, y=rate)) + 
+    #     geom_point() + 
+    #     geom_line() + 
+    #     labs(x='YEAR', y= 'Crime Occurrences per 1000 People') + 
+    #     scale_x_continuous(breaks = seq(min(crime_rate$YEAR), max(crime_rate$YEAR), 1)) +
+    #     ggtitle("Crime Rate") + 
+    #     theme_minimal_grid() + 
+    #     theme(
+    #         text = element_text(size = 12),
+    #         axis.title.x = element_text(size = 15),
+    #         axis.title.y = element_text(size = 15))
+    # ggplotly(chart[[3]])
 
-    chart[4] <- ggplot(type_crimes, aes(x=reorder(TYPE, -contri), y=contri)) + 
-        geom_bar(stat = "identity") + 
-        labs(x='', y= 'Contribution') + 
-        scale_y_continuous(labels = scales::percent) +
-        ggtitle("Constituents of Selected Crimes") + 
-        theme_minimal_grid() + 
-        theme(
-            text = element_text(size = 12),
-            axis.title.x = element_text(size = 15),
-            axis.title.y = element_text(size = 15),
-            axis.text.x = element_text(angle = 30, hjust = 1))
-    ggplotly(chart[4])
+    # chart[4] <- ggplot(type_crimes, aes(x=reorder(TYPE, -contri), y=contri)) + 
+    #     geom_bar(stat = "identity") + 
+    #     labs(x='', y= 'Contribution') + 
+    #     scale_y_continuous(labels = scales::percent) +
+    #     ggtitle("Constituents of Selected Crimes") + 
+    #     theme_minimal_grid() + 
+    #     theme(
+    #         text = element_text(size = 12),
+    #         axis.title.x = element_text(size = 15),
+    #         axis.title.y = element_text(size = 15),
+    #         axis.text.x = element_text(angle = 30, hjust = 1))
+    #ggplotly(chart[4])
 
     #return(plot_grid(chart1, chart2, chart3, chart4))
     #return chart
@@ -226,7 +226,7 @@ app$layout(
       htmlIframe(height=20, width=10, style=list(borderWidth = 0)), #space
       #htmlLabel('Try sorting by table columns!'),
       #table,
-      htmlIframe(height=20, width=10, style=list(borderWidth = 0)), #space
+      htmlIframe(height=20, width=10, style=list(borderWidth = 0))#space
       #dccMarkdown("[Data Source](https://cran.r-project.org/web/packages/gapminder/README.html)")
     )
   )
