@@ -128,7 +128,9 @@ make_charts1 <- function(yr_lst = all_year, ngbrhd_lst = all_neig, type_lst = al
             text = element_text(size = 12),
             axis.title.x = element_text(size = 15),
             axis.title.y = element_text(size = 15),
-            axis.text.x = element_text(angle = 30, hjust = 0.5))
+            axis.text.x = element_text(angle = 30, hjust = 0.5),
+            panel.background = element_blank(), 
+            axis.line = element_line(colour = "black"))
     ggplotly(chart1, tooltip="text")
 
 }
@@ -153,7 +155,9 @@ make_charts2 <- function(yr_lst = all_year, ngbrhd_lst = all_neig, type_lst = al
             text = element_text(size = 12),
             axis.title.x = element_text(size = 15),
             axis.title.y = element_text(size = 15),
-            axis.text.x = element_text(angle = 30, hjust = 0.5))
+            axis.text.x = element_text(angle = 30, hjust = 0.5),
+            panel.background = element_blank(), 
+            axis.line = element_line(colour = "black"))
     ggplotly(chart2, tooltip="text")
 }
 make_charts3 <- function(yr_lst = all_year, ngbrhd_lst = all_neig, type_lst = all_types){
@@ -172,7 +176,7 @@ make_charts3 <- function(yr_lst = all_year, ngbrhd_lst = all_neig, type_lst = al
     crime_rate <- inner_join(crime_rate, pop_yr)
     crime_rate <- crime_rate %>% mutate(rate = (N/Population)*1000)
 
-    chart3 <- ggplot(crime_rate, aes(x=YEAR, y=rate, group=1, text=paste("Year:", YEAR, "</br></br>Rate:", rate))) + 
+    chart3 <- ggplot(crime_rate, aes(x=YEAR, y=rate, group=1, text=paste("Year:", YEAR, "</br></br>Rate:", round(rate, digits=2)))) + 
         geom_point() + 
         geom_line(colour = "#56B4E9") + 
         labs(x='YEAR', y= 'Crime Occurrences per 1000 People') + 
@@ -182,7 +186,9 @@ make_charts3 <- function(yr_lst = all_year, ngbrhd_lst = all_neig, type_lst = al
         theme(
             text = element_text(size = 12),
             axis.title.x = element_text(size = 15),
-            axis.title.y = element_text(size = 15))
+            axis.title.y = element_text(size = 15),
+            panel.background = element_blank(), 
+            axis.line = element_line(colour = "black"))
     ggplotly(chart3, tooltip="text")
 }
 
@@ -197,7 +203,7 @@ make_charts3 <- function(yr_lst = all_year, ngbrhd_lst = all_neig, type_lst = al
         arrange(-N)
     type_crimes <- type_crimes %>% mutate(contri = N/sum(type_crimes$N))
 
-    chart4 <- ggplot(type_crimes, aes(x=reorder(TYPE, contri), y=contri, group=1, text=paste("Crime Type:", TYPE, "</br></br>Contribution:", contri))) + 
+    chart4 <- ggplot(type_crimes, aes(x=reorder(TYPE, contri), y=contri, group=1, text=paste("Crime Type:", TYPE, "</br></br>Contribution:", round(contri, digits=3)*100, "%", sep=""))) + 
         geom_bar(stat = "identity", fill = "#56B4E9") + 
         labs(x='', y= 'Contribution') + 
         scale_y_continuous(labels = scales::percent) +
@@ -207,7 +213,9 @@ make_charts3 <- function(yr_lst = all_year, ngbrhd_lst = all_neig, type_lst = al
             text = element_text(size = 12),
             axis.title.x = element_text(size = 15),
             axis.title.y = element_text(size = 15),
-            axis.text.x = element_text(hjust = 1)) + 
+            axis.text.x = element_text(hjust = 1),
+            panel.background = element_blank(), 
+            axis.line = element_line(colour = "black")) + 
         coord_flip()
     ggplotly(chart4, tooltip="text")
 }
