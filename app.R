@@ -1,9 +1,13 @@
-library(tidyverse)
+# library(tidyverse)
 library(plotly)
 library(dash)
 library(dashCoreComponents)
 library(dashHtmlComponents)
 library(dashTable)
+
+library(dplyr)
+library(readr)
+library(purrr)
 
 app <- Dash$new(external_stylesheets = "https://codepen.io/chriddyp/pen/bWLwgP.css")
 
