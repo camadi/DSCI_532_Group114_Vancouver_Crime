@@ -365,5 +365,5 @@ app$callback(
     make_charts4(year_value, neighbourhood_value, type_value)
   })
 
-app$run_server()
+app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
 
