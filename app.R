@@ -358,6 +358,8 @@ app$layout(
       #htmlLabel('Select a year range:'),
       yearSlider,
       htmlIframe(height=15, width=10, style=list(borderWidth = 0)), #space
+      htmlIframe(height=15, width=10, style=list(borderWidth = 0)), #space
+      htmlIframe(height=15, width=10, style=list(borderWidth = 0)), #space
       #htmlLabel('Select continents:'),
       neigh_Dropdown,
       htmlIframe(height=15, width=10, style=list(borderWidth = 0)), #space
