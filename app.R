@@ -8,6 +8,9 @@ library(dashTable)
 library(dplyr)
 library(readr)
 library(purrr)
+library(sf)
+library(geojsonio)
+
 
 app <- Dash$new(external_stylesheets = "https://codepen.io/chriddyp/pen/bWLwgP.css")
 
@@ -63,6 +66,9 @@ pop_prop <- pop_prop %>%
             TRUE ~ NEIGHBOURHOOD
         ))
 
+vancouver_hood_map <- sf::st_read('data/local-area-boundary.geojson')
+
+
 #We can get the years from the dataset to make ticks on the slider
 
 yearMarks <- map(unique(mydata$YEAR), as.character)
@@ -107,6 +113,42 @@ yr_lst <- unique(mydata$YEAR)
 all_neig <- unique(mydata$NEIGHBOURHOOD)
 all_year <- unique(mydata$YEAR)
 all_types <- unique(mydata$TYPE)
+
+#Creating chart0
+make_charts0 <- function(yr_lst = all_year, ngbrhd_lst = all_neig, type_lst = all_types){
+    df <- mydata %>% 
+        filter(TYPE %in% type_lst & NEIGHBOURHOOD %in% ngbrhd_lst & YEAR %in% yr_lst)
+    hood_df <- df %>% 
+        group_by(NEIGHBOURHOOD) %>%
+        summarise(N = n())
+
+    hood_map <- vancouver_hood_map %>% 
+        mutate(NEIGHBOURHOOD = as.character(name)) %>%
+        select(-name)
+
+    hood_join <- inner_join(hood_map, hood_df, by = c('NEIGHBOURHOOD'))
+    max_crime <- max(hood_join$N)
+    min_crime <- min(hood_join$N)
+
+    #chart = {}
+    chart0 <-     ggplot(hood_join, mapping = aes(fill = .data[['N']], group=1, text=paste("Neighborhood:", NEIGHBOURHOOD, "</br></br>Count:", N))) +
+         geom_sf(color = 'white', size = 0.2) +
+         scale_fill_viridis_c(option = 'plasma',
+                              name = "Crime Levels",
+                              limits = c(min_crime, max_crime)) +
+         ggtitle("Crimes By Neighborhood") + 
+         theme(axis.title.x=element_blank(),
+               axis.text.x=element_blank(),
+               axis.ticks.x=element_blank(),
+               axis.title.y=element_blank(),
+               axis.text.y=element_blank(),
+               panel.background = element_blank(), 
+               axis.ticks.y=element_blank()
+         )
+    ggplotly(chart0, tooltip="text")
+
+}
+
 
 #Creating chart1
 make_charts1 <- function(yr_lst = all_year, ngbrhd_lst = all_neig, type_lst = all_types){
@@ -228,6 +270,15 @@ make_charts3 <- function(yr_lst = all_year, ngbrhd_lst = all_neig, type_lst = al
 #}
 
 # Now we define the graph as a dash component using generated figure
+graph0 <- dccGraph(
+  id = 'graph0',
+  figure=make_charts0(), # gets initial data using argument defaults
+  style = list(
+        width ='49%',
+        display = 'inline-block',
+        padding = '0 20')
+)
+
 graph1 <- dccGraph(
   id = 'graph1',
   figure=make_charts1(), # gets initial data using argument defaults
@@ -292,9 +343,12 @@ app$layout(
       # type_Dropdown,
       htmlDiv(list(type_Dropdown), style = list(width = '33%', display = 'inline-block')),
 
-      htmlDiv(list(graph1, htmlIframe(width=20, style=list(borderWidth = 0)), graph2), style = list(width = '80%', padding= '100px 100px')),
 
-      htmlDiv(list(graph3, htmlIframe(width=20, style=list(borderWidth = 0)), graph4), style = list(width = '90%', padding= '50px 90px')),
+      htmlDiv(list(graph0, htmlIframe(width=20, style=list(borderWidth = 0)), graph1), style = list(width = '80%', padding= '100px 100px')),
+
+      htmlDiv(list(graph2, htmlIframe(width=20, style=list(borderWidth = 0)), graph3), style = list(width = '90%', padding= '50px 90px')),
+
+      htmlDiv(list(graph4), style = list(width = '100%', padding= '100px 300px')),
 
       htmlIframe(height=200, width=10, style=list(borderWidth = 0)),
       dccMarkdown("[Data Source](https://geodash.vpd.ca/opendata/)"),
@@ -317,6 +371,20 @@ app$layout(
 # Adding callbacks for interactivity
 # We need separate callbacks to update graph and table
 # BUT can use multiple inputs for each!
+
+app$callback(
+  #update figure of gap-graph
+  output=list(id = 'graph0', property='figure'),
+  #based on values of year, continent, y-axis components
+  params=list(input(id = 'year', property='value'),
+              input(id = 'neighbourhood', property='value'),
+              input(id = 'type', property='value')),
+  #this translates your list of params into function arguments
+  function(year_value, neighbourhood_value, type_value) {
+    make_charts0(year_value, neighbourhood_value, type_value)
+  })
+
+
 app$callback(
   #update figure of gap-graph
   output=list(id = 'graph1', property='figure'),
