@@ -6,10 +6,10 @@ DSCI_532_Group114_Vancouver_Crime
 This repository is to demonstrate an interactive visualization app developed on the [data](https://geodash.vpd.ca/opendata/) provided by the Vancouver Police Department (VPD). Our aim is to help spread awareness about Crimes in Vancouver and facilitate transparency of policing activity. Please have a look at the documents listed below to get into more details. We welcome improvements from anyone willing to contribute to our app to make it better. Also, please find below a rough sketch of the application for a quick walkthrough.
 
 
-![Screenshot](/img/appscreenshot_r.png)
+![Screenshot](/img/appscreenshot_r.PNG)
 
 
-![Screenshot](/img/appscreenshot_r2.png)
+![Screenshot](/img/appscreenshot_r2.PNG)
 
 
 
