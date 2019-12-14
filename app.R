@@ -22,14 +22,14 @@ app <- Dash$new(external_stylesheets = "https://codepen.io/chriddyp/pen/bWLwgP.c
 
 
 # Reading Vancouver City Population from 2001 to 2018
-pop_yr <- read_csv("data/Population_trend.csv")
+pop_yr <- read_csv("https://raw.githubusercontent.com/UBC-MDS/DSCI_532_Group114_Vancouver_Crime/master/data/Population_trend.csv")
 pop_yr <- pop_yr %>% select(YEAR, Population)
 
 # Reading each neighborhood's proportion of population to overall city's population
-pop_prop <- read_csv("data/population_proportion.csv")
+pop_prop <- read_csv("https://raw.githubusercontent.com/UBC-MDS/DSCI_532_Group114_Vancouver_Crime/master/data/population_proportion.csv")
 
 # Reading Crime Data
-mydata <- read_csv("data/crimedata_csv_all_years.csv")
+mydata <- read_csv("https://raw.githubusercontent.com/UBC-MDS/DSCI_532_Group114_Vancouver_Crime/master/data/crimedata_csv_all_years.csv")
 
 # Removing columns not needed & cleaning data
 mydata <- mydata %>% 
