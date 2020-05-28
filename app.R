@@ -22,14 +22,14 @@ app <- Dash$new(external_stylesheets = "https://codepen.io/chriddyp/pen/bWLwgP.c
 
 
 # Reading Vancouver City Population from 2001 to 2018
-pop_yr <- read_csv("data/Population_trend.csv")
+pop_yr <- read_csv("https://raw.githubusercontent.com/UBC-MDS/DSCI_532_Group114_Vancouver_Crime/master/data/Population_trend.csv")
 pop_yr <- pop_yr %>% select(YEAR, Population)
 
 # Reading each neighborhood's proportion of population to overall city's population
-pop_prop <- read_csv("data/population_proportion.csv")
+pop_prop <- read_csv("https://raw.githubusercontent.com/UBC-MDS/DSCI_532_Group114_Vancouver_Crime/master/data/population_proportion.csv")
 
 # Reading Crime Data
-mydata <- read_csv("data/crimedata_csv_all_years.csv")
+mydata <- read_csv("https://raw.githubusercontent.com/UBC-MDS/DSCI_532_Group114_Vancouver_Crime/master/data/crimedata_csv_all_years.csv")
 
 # Removing columns not needed & cleaning data
 mydata <- mydata %>% 
@@ -332,7 +332,7 @@ graph4 <- dccGraph(
 app$layout(
   htmlDiv(
     list(
-      htmlH1('Vancouver Crime Tracker', style = list('color'='#0072B2', 'padding'= '20px 20px')),
+      htmlH1('Vancouver Crime Tracker', style = list('color'='#0072B2', 'padding'= '30px 30px')),
       htmlIframe(height=20, width=10, style=list(borderWidth = 0)), #space
       htmlH5("Using Data from VPD we have created several plots for residents and visitors of Vancouver to view crime data. 
       There are three selectors, one for neighbourhood, crime type, and year. All three selectors impact each of the plots. 

@@ -22,6 +22,7 @@ install.packages("readr")
 install.packages("heatmaply")
 install.packages("readr")
 install.packages("tidyverse")
+install.packages("sf")
 
 
 # installs magrittr, promises, R6
